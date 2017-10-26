@@ -147,9 +147,9 @@ namespace ComicBookLibraryManagerWebApp.Controllers
             }
 
             var comicBook = _context.ComicBooks
-                .Include(cb => cb.Series)
-                .Where(cb => cb.Id == id)
-                .SingleOrDefault();
+                    .Include(cb => cb.Series)
+                    .Where(cb => cb.Id == id)
+                    .SingleOrDefault();
 
             if (comicBook == null)
             {
