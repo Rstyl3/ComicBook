@@ -88,9 +88,14 @@ namespace ComicBookLibraryManagerWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the comic book artist.
+            // Get the comic book artist.
             // Include the "ComicBook.Series", "Artist", and "Role" navigation properties.
-            var comicBookArtist = new ComicBookArtist();
+            var comicBookArtist = _context.ComicBookArtists
+                .Include(cba => cba.Artist)
+                .Include(cba => cba.Role)
+                .Include(cba => cba.ComicBook.Series)
+                .Where(cba => cba.Id == (int)id)
+                .SingleOrDefault();
 
             if (comicBookArtist == null)
             {
@@ -103,7 +108,10 @@ namespace ComicBookLibraryManagerWebApp.Controllers
         [HttpPost]
         public ActionResult Delete(int comicBookId, int id)
         {
-            // TODO Delete the comic book artist.
+            // Delete the comic book artist.
+            var comicBookArtist = new ComicBookArtist(){ Id = id };
+            _context.Entry(comicBookArtist).State = EntityState.Deleted;
+            _context.SaveChanges();
 
             TempData["Message"] = "Your artist was successfully deleted!";
 
