@@ -17,10 +17,12 @@ namespace ComicBookLibraryManagerWebApp.Controllers
     public class ComicBookArtistsController : BaseController
     {
         private ComicBooksRepository _comicBooksRepository = null;
+        private ComicBookArtistsRepository _comicBookArtistsRepository = null;
 
         public ComicBookArtistsController()
         {
             _comicBooksRepository = new ComicBooksRepository(Context);
+            _comicBookArtistsRepository = new ComicBookArtistsRepository(Context);
         }
 
         public ActionResult Add(int comicBookId)
@@ -57,7 +59,7 @@ namespace ComicBookLibraryManagerWebApp.Controllers
                     RoleId = viewModel.RoleId
                 };
 
-                Repository.AddComicBookArtist(comicBookArtist);
+                _comicBookArtistsRepository.Add(comicBookArtist);
 
                 TempData["Message"] = "Your artist was successfully added!";
 
@@ -83,7 +85,7 @@ namespace ComicBookLibraryManagerWebApp.Controllers
 
             // Get the comic book artist.
             // Include the "ComicBook.Series", "Artist", and "Role" navigation properties.
-            var comicBookArtist = Repository.GetComicBookArtist((int)id);
+            var comicBookArtist = _comicBookArtistsRepository.Get((int)id);
 
             if (comicBookArtist == null)
             {
@@ -97,7 +99,7 @@ namespace ComicBookLibraryManagerWebApp.Controllers
         public ActionResult Delete(int comicBookId, int id)
         {
             // Delete the comic book artist.
-            Repository.DeleteComicBookArtist(id);
+            _comicBookArtistsRepository.Delete(id);
 
             TempData["Message"] = "Your artist was successfully deleted!";
 
